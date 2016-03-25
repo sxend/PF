@@ -1,0 +1,8 @@
+dependencies:
+  override:
+    - nvm install v4.4.0 && nvm alias default v4.4.0
+    - npm install
+test:
+  override:
+    - npm run test
+    - npm run build
