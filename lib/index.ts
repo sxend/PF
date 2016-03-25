@@ -1,3 +1,3 @@
 import {PF} from './PF';
 
-export default PF;
+(0, eval)("this")["PF"] = PF; // expose global
