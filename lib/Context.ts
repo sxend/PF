@@ -1,7 +1,6 @@
 export class Context {
   'use strict';
   private data: any;
-  //
   constructor(config: any = {}) {
     this.data = {};
     this.set('methods', {});
