@@ -1,23 +1,25 @@
-export default class Context {
-  data: any;
+export class Context {
+  'use strict';
+  private data: any;
+  //
   constructor(config: any = {}) {
     this.data = {};
     this.set('methods', {});
     this.set('config', config);
   }
-  get(name) {
-    return this.data[name];
+  get<A>(name: string): A {
+    return <A> this.data[name];
   }
-  set(name, value) {
+  set<A>(name: string, value: A): void {
     this.data[name] = value;
   }
-  require(name) {
-    var fn = this.get('methods')[name];
-    if (typeof fn !== 'function') {
-      return;
+  require(name: string): Function {
+    var instance = this.get('methods')[name];
+    if (typeof instance === 'function') {
+      return instance.bind(this);
     }
-    return fn.bind(this);
   }
-  define(name, fn) {
+  define(name: string, fn: Function): void {
     this.get('methods')[name] = fn;
-  }}
+  }
+}
