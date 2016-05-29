@@ -1,4 +1,4 @@
-export function assign(target, source: any, ...parents: any[]) {
+export default function assign(target, source: any, ...parents: any[]) {
   'use strict';
   let ctx = this;
   let from = Object(source);
