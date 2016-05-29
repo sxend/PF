@@ -6,9 +6,9 @@ export function assign(target, source: any, ...parents: any[]) {
   if (!!parents && parents.length > 0) {
     to = assign.apply(ctx, [to].concat(parents));
   }
-  for (var key in from) {
-    if (from.hasOwnProperty(key)) {
-      to[key] = from[key];
+  for (var property in from) {
+    if (from.hasOwnProperty(property)) {
+      to[property] = from[property];
     }
   }
   return to;
