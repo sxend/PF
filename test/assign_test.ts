@@ -2,7 +2,7 @@ declare var describe;
 declare var it;
 declare var chai;
 
-import {assign} from '../lib/utils/assign';
+import assign from '../lib/utils/assign';
 
 let expect = chai.expect;
 
