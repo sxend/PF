@@ -1,4 +1,5 @@
 export function assign(target, source: any, ...parents: any[]) {
+  'use strict';
   let ctx = this;
   let from = Object(source);
   let to = Object(target);
@@ -6,7 +7,9 @@ export function assign(target, source: any, ...parents: any[]) {
     to = assign.apply(ctx, [to].concat(parents));
   }
   for (var key in from) {
-    to[key] = from[key];
+    if (from.hasOwnProperty(key)) {
+      to[key] = from[key];
+    }
   }
   return to;
 };
