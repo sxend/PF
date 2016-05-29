@@ -13,3 +13,4 @@ node_modules/
 dist/
 tsconfig.json
 npm-debug.log
+.tags*
