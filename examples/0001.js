@@ -15,6 +15,8 @@
         }
       };
     });
-    PF.main(configs);
+    PF.main({
+      configs: configs
+    });
   });
 })();

@@ -9,7 +9,7 @@ export module PF {
       document.addEventListener('DOMContentLoaded', callback, false);
     }
   }
-  export function main(configs: any[]): void {
-    configs.forEach(config => new Component(config));
+  export function main(props: any): void {
+    new Component(props);
   }
 }
