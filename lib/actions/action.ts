@@ -20,7 +20,6 @@ export default class Action {
     this.dispatcher.emit('render');
   }
   static Protocol = (dispatcher: EventEmitter) => {
-    console.log("protocol create");
     return {
       INITIALIZE: (f: (any) => void) => {
         dispatcher.on('initialize', f);
