@@ -1,3 +1,4 @@
+
 export default class EventEmitter {
   private _maxListener: number;
   private _listeners = {};

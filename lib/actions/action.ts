@@ -19,4 +19,18 @@ export default class Action {
     document.body.appendChild(script);
     this.dispatcher.emit('render');
   }
+  static Protocol = (dispatcher: EventEmitter) => {
+    console.log("protocol create");
+    return {
+      INITIALIZE: (f: (any) => void) => {
+        dispatcher.on('initialize', f);
+      },
+      FETCHED_DATA: (f: (any) => void) => {
+        dispatcher.on('fetched_data', f);
+      },
+      RENDER: (f: () => void) => {
+        dispatcher.on('render', f);
+      }
+    };
+  };
 }
