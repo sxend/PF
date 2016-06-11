@@ -6,7 +6,11 @@ export module PF {
     if (/complete|loaded|interactive/.test(document.readyState) && document.body) {
       callback();
     } else {
-      document.addEventListener('DOMContentLoaded', callback, false);
+      let handler = () => {
+        document.removeEventListener('DOMContentLoaded', handler);
+        callback();
+      };
+      document.addEventListener('DOMContentLoaded', handler, false);
     }
   }
   export function main(props: any): void {
