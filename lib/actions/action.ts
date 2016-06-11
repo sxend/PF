@@ -1,15 +1,18 @@
+import {Prop} from '../prop';
 import EventEmitter from '../event-emitter';
 
 export class Action {
+  private prop: Prop;
   private dispatcher:EventEmitter;
 
-  constructor(dispatcher:EventEmitter) {
+  constructor(prop: Prop, dispatcher:EventEmitter) {
+    this.prop = prop;
     this.dispatcher = dispatcher;
   }
 
-  render(config:any):void {
-    this.dispatcher.emit('initialize', config);
-    let id = config.id;
+  render():void {
+    this.dispatcher.emit('initialize');
+    let id = this.prop.id;
     window['pfcallback_' + id] = (data) => {
       setTimeout(() => {
         this.dispatcher.emit('fetched_data', data);

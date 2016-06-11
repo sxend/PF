@@ -1,13 +1,16 @@
+import {Prop} from '../prop';
 import EventEmitter from '../event-emitter';
 import {Action, Protocol} from '../actions/action';
 
 export class Store extends EventEmitter {
+  private prop: Prop;
   private dispatcher:EventEmitter;
   private data:any = {};
   private action:Protocol;
 
-  constructor(dispatcher:EventEmitter) {
+  constructor(prop: Prop, dispatcher:EventEmitter) {
     super();
+    this.prop = prop;
     this.dispatcher = dispatcher;
     this.action = Action.protocol(dispatcher);
     this.action.initialize(this.onInitialize);
@@ -17,8 +20,7 @@ export class Store extends EventEmitter {
     return this.data;
   }
 
-  private onInitialize(config) {
-    this.data.config = config;
+  private onInitialize() {
     this.action.fetchedData(this.onFetchData);
     this.action.render(this.onRender);
   }

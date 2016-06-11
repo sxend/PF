@@ -1,33 +1,41 @@
+import {Prop} from '../prop';
 import EventEmitter from '../event-emitter';
 import {Action} from '../actions/action';
 import {Store} from '../stores/store';
 import nano from '../utils/nano';
 
 export default class Component {
-  constructor(props) {
-    props.configs.forEach(config => {
-      let dispatcher = new EventEmitter();
-      let action = new Action(dispatcher);
-      let store = new Store(dispatcher);
-      store.prepare(this.preRender(config, store));
-      store.complete(() => {
+  private store:Store;
+  private prop:Prop;
+
+  constructor(prop:Prop) {
+    this.prop = prop;
+    let dispatcher = new EventEmitter();
+    let action = new Action(prop, dispatcher);
+    let store = this.store = new Store(prop, dispatcher);
+    store.prepare(this.preRender);
+    store.complete(() => {
+      prop.configs.forEach(config => {
         config.onpfcomplete.bind(config, action, store, dispatcher);
       });
-      store.complete(this.render(config, store));
-      action.render(config);
+    });
+    store.complete(this.render);
+    action.render();
+  }
+
+  private preRender() {
+    let text = this.store.getData().prepareText;
+    this.prop.configs.forEach(config => {
+      config.area.innerText = text;
     });
   }
 
-  private preRender(config, store) {
-    return () => config.area.innerText = store.getData().prepareText;
-  }
-
-  private render(config, store) {
-    return () => {
-      let data = store.getData().fetchedData;
+  private render() {
+    let data = this.store.getData().fetchedData;
+    this.prop.configs.forEach(config => {
       let el = document.createElement('div');
       el.innerHTML = nano(config.template, data);
       document.body.replaceChild(el, config.area);
-    };
+    });
   }
 }

@@ -1,4 +1,5 @@
 import Component from './components/component';
+import {Prop} from './prop';
 
 export module PF {
   'use strict';
@@ -13,7 +14,7 @@ export module PF {
       document.addEventListener('DOMContentLoaded', handler, false);
     }
   }
-  export function main(props: any): void {
-    new Component(props);
+  export function main(prop: Prop): void {
+    new Component(prop);
   }
 }
