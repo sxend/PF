@@ -1,44 +1,43 @@
 import EventEmitter from '../event-emitter';
-import Action from '../actions/action';
+import {Action, Protocol} from '../actions/action';
 
-export default class Store extends EventEmitter {
-  private dispatcher: EventEmitter;
-  private data: any = {};
-  private Actions;
-  constructor(dispatcher: EventEmitter) {
+export class Store extends EventEmitter {
+  private dispatcher:EventEmitter;
+  private data:any = {};
+  private action:Protocol;
+
+  constructor(dispatcher:EventEmitter) {
     super();
     this.dispatcher = dispatcher;
-    this.Actions = Action.Protocol(this.dispatcher);
-    this.Actions.INITIALIZE((config) => {
-      this.onInitialize(config);
-    });
+    this.action = Action.protocol(dispatcher);
+    this.action.initialize(this.onInitialize);
   }
+
   getData() {
     return this.data;
   }
+
   private onInitialize(config) {
     this.data.config = config;
-    this.Actions.FETCHED_DATA((data) => {
-      this.onFetchData(data);
-    });
-    this.Actions.RENDER(() => {
-      this.onRender();
-    });
+    this.action.fetchedData(this.onFetchData);
+    this.action.render(this.onRender);
   }
+
   private onRender() {
     this.data.prepareText = "now loading...";
     this.emit("PREPARE");
   }
+
   private onFetchData(data) {
     this.data.fetchedData = data;
     this.emit('COMPLETE');
   }
-  Protocol = {
-    COMPLETE: (f: () => void) => {
-      this.on("COMPLETE", f);
-    },
-    PREPARE: (f: () => void) => {
-      this.on("PREPARE", f);
-    }
-  };
+
+  public complete(f:() => void) {
+    this.on("COMPLETE", f);
+  }
+
+  public prepare(f:() => void) {
+    this.on("PREPARE", f);
+  }
 }

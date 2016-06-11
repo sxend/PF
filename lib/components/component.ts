@@ -1,6 +1,6 @@
 import EventEmitter from '../event-emitter';
-import Action from '../actions/action';
-import Store from '../stores/store';
+import {Action} from '../actions/action';
+import {Store} from '../stores/store';
 import nano from '../utils/nano';
 
 export default class Component {
@@ -9,14 +9,13 @@ export default class Component {
       let dispatcher = new EventEmitter();
       let action = new Action(dispatcher);
       let store = new Store(dispatcher);
-
-      store.Protocol.PREPARE(() => {
+      store.prepare(() => {
         config.area.innerText = store.getData().prepareText;
       });
-      store.Protocol.COMPLETE(() => {
+      store.complete(() => {
         config.onpfcomplete.bind(config, action, store, dispatcher);
       });
-      store.Protocol.COMPLETE(() => {
+      store.complete(() => {
         let data = store.getData().fetchedData;
         let el = document.createElement('div');
         el.innerHTML = nano(config.template, data);
