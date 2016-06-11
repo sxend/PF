@@ -37,15 +37,15 @@ export class Protocol {
     this.dispatcher = dispatcher;
   }
 
-  public initialize(f:(any) => void) {
+  public onInitialize(f:(any) => void) {
     this.dispatcher.on('initialize', f);
   }
 
-  public fetchedData(f:(any) => void) {
+  public onFetchedData(f:(any) => void) {
     this.dispatcher.on('fetched_data', f);
   }
 
-  public render(f:(any) => void) {
+  public onRender(f:(any) => void) {
     this.dispatcher.on('render', f);
   }
 }

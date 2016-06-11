@@ -13,13 +13,13 @@ export default class Component {
     let dispatcher = new EventEmitter();
     let action = new Action(prop, dispatcher);
     let store = this.store = new Store(prop, dispatcher);
-    store.prepare(this.preRender);
-    store.complete(() => {
+    store.onPrepare(this.preRender);
+    store.onComplete(() => {
       prop.configs.forEach(config => {
         config.onpfcomplete.bind(config, action, store, dispatcher);
       });
     });
-    store.complete(this.render);
+    store.onComplete(this.render);
     action.render();
   }
 

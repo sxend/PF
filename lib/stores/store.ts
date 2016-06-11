@@ -13,7 +13,7 @@ export class Store extends EventEmitter {
     this.prop = prop;
     this.dispatcher = dispatcher;
     this.action = Action.protocol(dispatcher);
-    this.action.initialize(this.onInitialize);
+    this.action.onInitialize(this.onInitialize);
   }
 
   getData() {
@@ -21,8 +21,8 @@ export class Store extends EventEmitter {
   }
 
   private onInitialize() {
-    this.action.fetchedData(this.onFetchData);
-    this.action.render(this.onRender);
+    this.action.onFetchedData(this.onFetchedData);
+    this.action.onRender(this.onRender);
   }
 
   private onRender() {
@@ -30,16 +30,16 @@ export class Store extends EventEmitter {
     this.emit("PREPARE");
   }
 
-  private onFetchData(data) {
+  private onFetchedData(data) {
     this.data.fetchedData = data;
     this.emit('COMPLETE');
   }
 
-  public complete(f:() => void) {
+  public onComplete(f:() => void) {
     this.on("COMPLETE", f);
   }
 
-  public prepare(f:() => void) {
+  public onPrepare(f:() => void) {
     this.on("PREPARE", f);
   }
 }
