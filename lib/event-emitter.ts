@@ -30,16 +30,16 @@ export default class EventEmitter {
     (this._onces[name] = this._onces[name] || []).push(listener);
   }
 
-  removeListener(name:string) {
-    delete this._listeners[name];
+  removeListener(name:string, listener:Function) {
+    let listeners = this._listeners[name];
+    let index = listeners.indexOf(listener);
+    if (index !== -1) {
+      listeners.splice(index, 1);
+    }
   }
 
-  removeAllListeners(name:string, listener:Function) {
-    let listeners = this._listeners[name];
-    var index = listeners[name].indexOf(listener);
-    if (index !== -1) {
-      delete listeners[name][index];
-    }
+  removeAllListeners(name:string) {
+    delete this._listeners[name];
   }
 
   listeners(name:string) {
