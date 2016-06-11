@@ -13,29 +13,28 @@ export default class Component {
     let dispatcher = new EventEmitter();
     let action = new Action(prop, dispatcher);
     let store = this.store = new Store(prop, dispatcher);
-    store.onPrepare(this.preRender);
-    store.onComplete(() => {
-      prop.configs.forEach(config => {
-        config.onpfcomplete.bind(config, action, store, dispatcher);
-      });
+    store.onPrepare(this.preRender());
+    store.onComplete(({config}) => {
+      config.onpfcomplete.call(config, action, store, dispatcher);
     });
-    store.onComplete(this.render);
+    store.onComplete(this.onComplete());
     action.render();
   }
 
   private preRender() {
-    let text = this.store.getData().prepareText;
-    this.prop.configs.forEach(config => {
-      config.area.innerText = text;
-    });
+    return () => {
+      let text = this.store.getData().prepareText;
+      this.prop.configs.forEach(config => {
+        config.area.innerText = text;
+      });
+    };
   }
 
-  private render() {
-    let data = this.store.getData().fetchedData;
-    this.prop.configs.forEach(config => {
+  private onComplete() {
+    return ({config, data}) => {
       let el = document.createElement('div');
       el.innerHTML = nano(config.template, data);
       document.body.replaceChild(el, config.area);
-    });
+    };
   }
 }

@@ -1,3 +1,1 @@
-pfcallback_0002({
-  text: "0002 data"
-});
+setTimeout(pfcallback_0001.bind(null, {text: "0001 data"}), Math.random() * 1000);
