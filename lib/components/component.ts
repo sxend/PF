@@ -15,9 +15,9 @@ export default class Component {
     let store = this.store = new Store(prop, dispatcher);
     store.onPrepare(this.preRender());
     store.onComplete(({config}) => {
-      config.onpfcomplete.call(config, action, store, dispatcher);
+      config.onpfcomplete.bind(config, action, store, dispatcher);
     });
-    store.onComplete(this.onComplete());
+    store.onComplete(this.render());
     action.render();
   }
 
@@ -30,7 +30,7 @@ export default class Component {
     };
   }
 
-  private onComplete() {
+  private render() {
     return ({config, data}) => {
       let el = document.createElement('div');
       el.innerHTML = nano(config.template, data);
