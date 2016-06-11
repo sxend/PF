@@ -1,8 +1,8 @@
 
 export default class EventEmitter {
   private _maxListener: number;
-  private _listeners: {[name: string]: [Function]} = {};
-  private _onces: {[name: string]: [Function]} = {};
+  private _listeners: {[name: string]: Function[]} = {};
+  private _onces: {[name: string]: Function[]} = {};
 
   setMaxListeners(maxListener: number) {
     this._maxListener = maxListener;
