@@ -1,8 +1,8 @@
 
 export default class EventEmitter {
   private _maxListener: number;
-  private _listeners = {};
-  private _onces = {};
+  private _listeners: {[name: string]: [Function]} = {};
+  private _onces: {[name: string]: [Function]} = {};
 
   setMaxListeners(maxListener: number) {
     this._maxListener = maxListener;
@@ -16,19 +16,19 @@ export default class EventEmitter {
     });
     this._onces[name] = [];
   }
-  addListener(name: string, listener) {
+  addListener(name: string, listener: Function) {
     this.on(name, listener);
   }
-  on(name: string, listener) {
+  on(name: string, listener: Function) {
     (this._listeners[name] = this._listeners[name] || []).push(listener);
   }
-  once(name: string, listener) {
+  once(name: string, listener: Function) {
     (this._onces[name] = this._onces[name] || []).push(listener);
   }
   removeListener(name: string) {
     delete this._listeners[name];
   }
-  removeAllListeners(name: string, listener) {
+  removeAllListeners(name: string, listener: Function) {
     let listeners = this._listeners[name];
     var index = listeners[name].indexOf(listener);
     if (index !== -1) {
